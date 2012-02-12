@@ -16,7 +16,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            <button onclick="location.href='finish'">Create</button>
+            <button onclick="location.href='create'">Create</button>
         </td>
     </tr>
 </table>

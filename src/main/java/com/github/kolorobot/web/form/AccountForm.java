@@ -6,6 +6,9 @@ import org.hibernate.validator.constraints.Email;
 
 import com.github.kolorobot.web.validation.SamePasswords;
 
+/**
+ * Used for wizard-like account creation
+ */
 @SamePasswords(message = "{validation.profile.samePasswords}", groups = { AccountForm.AccountStepTwo.class })
 public class AccountForm implements PasswordAware {
 

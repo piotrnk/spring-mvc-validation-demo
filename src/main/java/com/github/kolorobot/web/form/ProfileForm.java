@@ -7,6 +7,9 @@ import org.hibernate.validator.constraints.Email;
 import com.github.kolorobot.domain.User;
 import com.github.kolorobot.web.validation.*;
 
+/**
+ * Used for account creation with custom validations
+ */
 @UniqueUsername(message = "{validation.profile.uniqueUsername}")
 @SamePasswords(message = "{validation.profile.samePasswords}")
 public class ProfileForm implements PasswordAware {

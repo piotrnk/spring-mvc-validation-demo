@@ -2,8 +2,8 @@ package com.github.kolorobot.web.form;
 
 public interface PasswordAware {
 
-	public abstract String getConfirmedPassword();
+	String getConfirmedPassword();
 
-	public abstract String getPassword();
+	String getPassword();
 
 }

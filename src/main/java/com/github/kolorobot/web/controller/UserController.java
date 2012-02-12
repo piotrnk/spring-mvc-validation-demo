@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.github.kolorobot.domain.User;
@@ -23,7 +22,7 @@ import com.github.kolorobot.web.message.MessageFactory;
 public class UserController {
 	
 	@Resource
-	private UserRepository userDao;
+	private UserRepository userRepository;
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -32,7 +31,7 @@ public class UserController {
 	
 	@RequestMapping("list")
 	public void list(Model model) {
-		model.addAttribute("users", userDao.findAll());
+		model.addAttribute("users", userRepository.findAll());
 	}
 	
 	@RequestMapping("create")
@@ -51,9 +50,9 @@ public class UserController {
 		user.setEmail(profileForm.getEmail());
 		user.setName(profileForm.getUsername());
 		user.setPassword(profileForm.getUsername());
-		userDao.save(user);
+		userRepository.save(user);
 		
-		redirectAttributes.addAttribute("message", MessageFactory.createInfoMessage("account.created", user.getName()));
+		redirectAttributes.addFlashAttribute("message", MessageFactory.createInfoMessage("account.created", user.getName()));
 		return "redirect:list";
 	}
 }
