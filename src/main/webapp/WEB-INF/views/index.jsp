@@ -1,9 +1,7 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<h1>Welcome to the Spring MVC application!</h1>
-
-<h2>Log entries</h2>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<h1><c:out value="Demo" /></h1>
 <ul>
-	<c:forEach var="logEntry" items="${logEntries}">
-		<li>${logEntry.date} : ${logEntry.message}</li>
-	</c:forEach>
+    <li><a href="user/list">User list</a></li>
+    <li><a href="user/create">User create</a></li>
+    <li><a href="account/stepOne">Wizard-like user creation</a></li>
 </ul>
