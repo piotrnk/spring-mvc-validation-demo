@@ -1,9 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <h1>Create account - Step One</h1>
-<c:if test="${not empty message}">
-    <p><c:out value="${message.key}" /></p>
-</c:if>
 <form:form modelAttribute="accountForm" method="post">
     <form:errors path="" element="p" />
     <table>
