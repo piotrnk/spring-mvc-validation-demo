@@ -1,6 +1,7 @@
 package com.github.kolorobot.web.controller;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -30,7 +31,7 @@ public class UserController {
 	}
 	
 	@RequestMapping("list")
-	public void list(Model model) {
+	public void list(Model model, HttpSession session) {
 		model.addAttribute("users", userRepository.findAll());
 	}
 	

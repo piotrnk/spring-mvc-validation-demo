@@ -5,9 +5,9 @@ import javax.annotation.Resource;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -32,14 +32,19 @@ public class AccountRegistrationWizardController {
 	public void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 	}
+	
+	@ExceptionHandler(HttpSessionRequiredException.class)
+	public String handleHttpSessionRequiredException(HttpSessionRequiredException exception) {		
+		return "redirect:stepOne";
+	}
 
 	@RequestMapping("stepOne")
-	public AccountForm stepOneAccountRegistration() {
+	public AccountForm showStepOne() {
 		return new AccountForm();
 	}
 
 	@RequestMapping(value = "stepOne", method = RequestMethod.POST)
-	public String stepOneAccountRegistration(@Validated(AccountStepOne.class) @ModelAttribute AccountForm accountForm, BindingResult bindingResult, Model model) {
+	public String stepOne(@Validated(AccountStepOne.class) @ModelAttribute AccountForm accountForm, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return "account/stepOne";
 		}
@@ -47,27 +52,33 @@ public class AccountRegistrationWizardController {
 	}
 
 	@RequestMapping("stepTwo")
-	public void stepTwoAccountRegistration() {
-
+	public String showStepTwo(@Validated(AccountStepOne.class) @ModelAttribute AccountForm accountForm, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "redirect:stepOne";
+		}
+		return "account/stepTwo";
 	}
 
 	@RequestMapping(value = "stepTwo", method = RequestMethod.POST)
-	public String stepTwoAccountRegistration(@Validated(AccountStepTwo.class) @ModelAttribute AccountForm accountForm, BindingResult bindingResult) {
+	public String stepTwo(@Validated(AccountStepTwo.class) @ModelAttribute AccountForm accountForm, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return "account/stepTwo";
 		}
-
 		return "redirect:summary";
 	}
 
 	@RequestMapping("summary")
-	public void summaryAccountRegistration(@ModelAttribute AccountForm accountForm, Model model) {
-		model.addAttribute(accountForm);
+	public String showSummary(@Validated({AccountStepOne.class, AccountStepTwo.class}) @ModelAttribute AccountForm accountForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+		if (bindingResult.hasErrors()) {
+			redirectAttributes.addFlashAttribute("message", MessageFactory.createErrorMessage("account.wizard.error"));
+			return "redirect:stepOne";
+		}
+		return "account/summary";
 	}
 
 	@Transactional
 	@RequestMapping("create")
-	public String finishAccountRegistration(@Validated({AccountStepOne.class, AccountStepTwo.class}) @ModelAttribute AccountForm accountForm, BindingResult bindingResult, SessionStatus sessionStatus, RedirectAttributes redirectAttributes) {
+	public String createAccount(@Validated({AccountStepOne.class, AccountStepTwo.class}) @ModelAttribute AccountForm accountForm, BindingResult bindingResult, SessionStatus sessionStatus, RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("message", MessageFactory.createErrorMessage("account.wizard.error"));
 			return "redirect:stepOne";

@@ -17,7 +17,7 @@ public class AccountForm implements PasswordAware {
 
 	public interface AccountStepTwo {
 	}
-
+	
 	@NotNull(message = "{validation.profile.notNullUsername}", groups = { AccountStepOne.class })
 	private String username;
 

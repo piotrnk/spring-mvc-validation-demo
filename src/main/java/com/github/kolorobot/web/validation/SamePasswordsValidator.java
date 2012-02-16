@@ -12,9 +12,26 @@ public class SamePasswordsValidator implements ConstraintValidator<SamePasswords
 
 	@Override
 	public boolean isValid(PasswordAware value, ConstraintValidatorContext context) {
-		if(value.getConfirmedPassword() == null) {
+		
+		String password = value.getPassword();
+		String confirmedPassword = value.getConfirmedPassword();
+		
+		if(bothAreNull(password, confirmedPassword)) {
 			return true;
 		}
-		return value.getConfirmedPassword().equals(value.getPassword());
+		
+		if(atLeastOneIsNull(password, confirmedPassword)) {
+			return false;
+		}
+		
+		return confirmedPassword.equals(password);
+	}
+
+	private boolean atLeastOneIsNull(String arg1, String arg2) {
+		return arg1 == null || arg2 == null;
+	}
+
+	private boolean bothAreNull(String arg1, String arg2) {		
+		return arg1 == null && arg2 == null;
 	}
 }
