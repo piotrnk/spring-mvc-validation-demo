@@ -42,7 +42,7 @@ public class UserController {
 	
 	@Transactional
 	@RequestMapping(value = "create", method = RequestMethod.POST)
-	public String create(@Valid @ModelAttribute ProfileForm profileForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+	public String doCreate(@Valid @ModelAttribute ProfileForm profileForm, BindingResult bindingResult, RedirectAttributes ra) {
 		if(bindingResult.hasErrors()) {
 			return "user/create";
 		}
@@ -53,7 +53,7 @@ public class UserController {
 		user.setPassword(profileForm.getUsername());
 		userRepository.save(user);
 		
-		redirectAttributes.addFlashAttribute("message", MessageFactory.createInfoMessage("account.created", user.getName()));
+		ra.addFlashAttribute("message", MessageFactory.createInfoMessage("account.created", user.getName()));
 		return "redirect:list";
 	}
 }
