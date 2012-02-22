@@ -11,7 +11,7 @@ import com.github.kolorobot.web.form.ProfileForm;
 public class UniqueUsernameValidator implements ConstraintValidator<UniqueUsername, ProfileForm> {
 
 	@Autowired
-	protected UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Override
 	public void initialize(UniqueUsername constraintAnnotation) {

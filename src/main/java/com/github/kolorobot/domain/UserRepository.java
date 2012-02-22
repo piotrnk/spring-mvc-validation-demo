@@ -1,39 +1,17 @@
 package com.github.kolorobot.domain;
 
-import java.util.*;
+import java.util.Collection;
 
-import javax.persistence.*;
+public interface UserRepository {
 
-import org.springframework.stereotype.Repository;
+	boolean hasUser(String username);
 
-@Repository
-public class UserRepository {
+	void save(User entity);
 
-	@PersistenceContext
-	private EntityManager entityManager;
+	void remove(User entity);
 
-	public boolean hasUser(String username) {
-		TypedQuery<User> query = entityManager.createNamedQuery("User.findByName", User.class).setParameter("name", username);
-		List<User> result = query.setMaxResults(1).getResultList();
-		return !result.isEmpty();
-	}
+	User findById(long id);
 
-	public void save(User entity) {
-		entityManager.persist(entity);
-	}
+	Collection<User> findAll();
 
-	public void remove(User entity) {
-		entityManager.remove(entity);
-	}
-
-	public User findById(long id) {
-		User entity = entityManager.find(User.class, id);
-		return entity;
-	}
-
-	public Collection<User> findAll() {
-		TypedQuery<User> query = entityManager.createNamedQuery("User.findAll", User.class);
-		List<User> result = query.getResultList();
-		return Collections.unmodifiableCollection(result);
-	}
 }

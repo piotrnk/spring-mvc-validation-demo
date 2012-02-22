@@ -10,7 +10,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java-version>1.6</java-version>
-		<org.springframework-version>3.1.0.RELEASE</org.springframework-version>
+		<org.springframework-version>3.1.1.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.9</org.aspectj-version>
 		<cglib-version>2.2.2</cglib-version>
 		<org.slf4j-version>1.5.10</org.slf4j-version>
@@ -184,9 +184,21 @@
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+			<artifactId>junit-dep</artifactId>
+			<version>4.10</version>
 			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-core</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-library</artifactId>
+			<version>1.2.1</version>
 		</dependency>
 		
 		<dependency>

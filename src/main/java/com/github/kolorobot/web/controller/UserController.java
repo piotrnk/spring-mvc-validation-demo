@@ -8,7 +8,7 @@ import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -25,25 +25,33 @@ public class UserController {
 	@Resource
 	private UserRepository userRepository;
 	
+	public UserController() {
+
+	}
+	
+	public UserController(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 	    binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 	}
 	
 	@RequestMapping("list")
-	public void list(Model model, HttpSession session) {
+	public void userList(Model model, HttpSession session) {
 		model.addAttribute("users", userRepository.findAll());
 	}
 	
 	@RequestMapping("create")
-	public void create(Model model) {
+	public void profileForm(Model model) {
 		model.addAttribute(new ProfileForm());
 	}
 	
 	@Transactional
 	@RequestMapping(value = "create", method = RequestMethod.POST)
-	public String doCreate(@Valid @ModelAttribute ProfileForm profileForm, BindingResult bindingResult, RedirectAttributes ra) {
-		if(bindingResult.hasErrors()) {
+	public String create(@Valid ProfileForm profileForm, Errors errors, RedirectAttributes redirectAttrs) {
+		if(errors.hasErrors()) {
 			return "user/create";
 		}
 		
@@ -53,7 +61,7 @@ public class UserController {
 		user.setPassword(profileForm.getUsername());
 		userRepository.save(user);
 		
-		ra.addFlashAttribute("message", MessageFactory.createInfoMessage("account.created", user.getName()));
+		redirectAttrs.addFlashAttribute("message", MessageFactory.createInfoMessage("account.created", user.getName()));
 		return "redirect:list";
 	}
 }
