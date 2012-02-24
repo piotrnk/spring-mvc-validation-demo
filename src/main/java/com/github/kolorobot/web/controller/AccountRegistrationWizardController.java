@@ -1,7 +1,6 @@
 package com.github.kolorobot.web.controller;
 
-import javax.annotation.Resource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.github.kolorobot.domain.User;
-import com.github.kolorobot.domain.UserRepository;
+import com.github.kolorobot.domain.UserCreateService;
 import com.github.kolorobot.web.form.*;
 import com.github.kolorobot.web.form.AccountForm.AccountStepOne;
 import com.github.kolorobot.web.form.AccountForm.AccountStepTwo;
@@ -25,8 +24,8 @@ import com.github.kolorobot.web.message.MessageFactory;
 @RequestMapping("account")
 public class AccountRegistrationWizardController {
 
-	@Resource
-	private UserRepository userRepository;
+	@Autowired
+	private UserCreateService service;
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -90,11 +89,6 @@ public class AccountRegistrationWizardController {
 	}
 
 	private User createUser(AccountForm accountForm) {
-		User user = new User();
-		user.setEmail(accountForm.getEmail());
-		user.setName(accountForm.getUsername());
-		user.setPassword(accountForm.getUsername());
-		userRepository.save(user);
-		return user;
+		return service.createUser(accountForm.getEmail(), accountForm.getUsername(), accountForm.getPassword());
 	}
 }

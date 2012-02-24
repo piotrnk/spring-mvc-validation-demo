@@ -6,7 +6,7 @@ public interface UserRepository {
 
 	boolean hasUser(String username);
 
-	void save(User entity);
+	User save(User entity);
 
 	void remove(User entity);
 

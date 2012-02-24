@@ -20,8 +20,9 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public void save(User entity) {
+	public User save(User entity) {
 		entityManager.persist(entity);
+		return entity;
 	}
 
 	@Override
